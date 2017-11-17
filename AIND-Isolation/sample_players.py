@@ -7,6 +7,8 @@ own agent and example heuristic functions.
 """
 
 from random import randint
+from game_agent import AlphaBetaPlayer
+from game_agent import *
 
 
 def null_score(game, player):
@@ -256,8 +258,8 @@ if __name__ == "__main__":
     from isolation import Board
 
     # create an isolation board (by default 7x7)
-    player1 = RandomPlayer()
-    player2 = GreedyPlayer()
+    player1 = GreedyPlayer()
+    player2 = AlphaBetaPlayer(score_fn=custom_score)
     game = Board(player1, player2)
 
     # place player 1 on the board at row 2, column 3, then place player 2 on
@@ -266,20 +268,6 @@ if __name__ == "__main__":
     game.apply_move((2, 3))
     game.apply_move((0, 5))
     print(game.to_string())
-
-    # players take turns moving on the board, so player1 should be next to move
-    assert(player1 == game.active_player)
-
-    # get a list of the legal moves available to the active player
-    print(game.get_legal_moves())
-
-    # get a successor of the current state by making a copy of the board and
-    # applying a move. Notice that this does NOT change the calling object
-    # (unlike .apply_move()).
-    new_game = game.forecast_move((1, 1))
-    assert(new_game.to_string() != game.to_string())
-    print("\nOld state:\n{}".format(game.to_string()))
-    print("\nNew state:\n{}".format(new_game.to_string()))
 
     # play the remainder of the game automatically -- outcome can be "illegal
     # move", "timeout", or "forfeit"

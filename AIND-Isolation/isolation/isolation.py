@@ -52,6 +52,7 @@ class Board(object):
         self._board_state[-1] = Board.NOT_MOVED
         self._board_state[-2] = Board.NOT_MOVED
 
+
     def hash(self):
         return str(self._board_state).__hash__()
 
@@ -322,7 +323,7 @@ class Board(object):
             game_copy = self.copy()
 
             move_start = time_millis()
-            time_left = lambda : time_limit - (time_millis() - move_start)
+            time_left = lambda: time_limit - (time_millis() - move_start)
             curr_move = self._active_player.get_move(game_copy, time_left)
             move_end = time_left()
 

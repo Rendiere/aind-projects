@@ -10,45 +10,10 @@ class SearchTimeout(Exception):
     pass
 
 
-def custom_score(game, player):
-    """Calculate the heuristic value of a game state from the point of view
-    of the given player.
-
-    This should be the best heuristic function for your project submission.
-
-    Note: this function should be called from within a Player instance as
-    `self.score()` -- you should not need to call this function directly.
-
-    Parameters
-    ----------
-    game : `isolation.Board`
-        An instance of `isolation.Board` encoding the current state of the
-        game (e.g., player locations and blocked cells).
-
-    player : object
-        A player instance in the current game (i.e., an object corresponding to
-        one of the player objects `game.__player_1__` or `game.__player_2__`.)
-
-    Returns
-    -------
-    float
-        The heuristic value of the current game state to the specified player.
-    """
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
-
-    return float(len(game.get_legal_moves(player)))
-
-
 def custom_score_2(game, player):
-    """Calculate the heuristic value of a game state from the point of view
-    of the given player.
-
-    Note: this function should be called from within a Player instance as
-    `self.score()` -- you should not need to call this function directly.
+    """
+    Calculate the number of open spaces around the player in a 2
+    block wide canvas.
 
     Parameters
     ----------
@@ -65,23 +30,38 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-
     if game.is_loser(player):
         return float("-inf")
 
     if game.is_winner(player):
         return float("inf")
 
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - opp_moves)
+    own_y, own_x = game.get_player_location(player)
+    opp_y, opp_x = game.get_player_location(game.get_opponent(player))
+    blank_spaces = game.get_blank_spaces()
+
+    own_canvas_count = 0
+    opp_canvas_count = 0
+    for bx, by in blank_spaces:
+        if (abs(bx - own_x) == 2 and abs(by - own_y) <= 2) or (
+                        abs(by - own_y) == 2 and abs(bx - own_x) <= 2):
+            own_canvas_count += 1
+
+        if (abs(bx - opp_x) == 2 and abs(by - opp_y) <= 2) or (
+                        abs(by - opp_y) == 2 and abs(bx - opp_x) <= 2):
+            opp_canvas_count += 1
+
+    return float(own_canvas_count - opp_canvas_count)
+
 
 def custom_score_3(game, player):
-    """Calculate the heuristic value of a game state from the point of view
-    of the given player.
+    """
+    Calculate how far each player is from the center of the board.
+    The closer to the center, the higher the probability of success,
+    because being along the edges means less possibly moves.
 
-    Note: this function should be called from within a Player instance as
-    `self.score()` -- you should not need to call this function directly.
+    Use Manhattan distance (distance along grid lines) instead of euclidean
+    distance.
 
     Parameters
     ----------
@@ -98,15 +78,68 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
+
     if game.is_loser(player):
         return float("-inf")
 
     if game.is_winner(player):
         return float("inf")
 
-    w, h = game.width / 2., game.height / 2.
-    y, x = game.get_player_location(player)
-    return float((h - y)**2 + (w - x)**2)
+    # Center position of board
+    center_x, center_y = (game.width / 2), (game.height / 2)
+
+    # Opponent x and y coordinates
+    opp_y, opp_x = game.get_player_location(game.get_opponent(player))
+
+    opp_distance = abs(opp_x - center_x) + abs(opp_y - center_y)
+
+    # Player x and y coordinates
+    own_y, own_x = game.get_player_location(player)
+
+    own_distance = abs(own_x - center_x) + abs(own_y - center_y)
+
+    return float(opp_distance - own_distance)
+
+
+def custom_score(game, player):
+    """
+    Minimize the portion of available moves that fall along the edges of the game board
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    -------
+    float
+        The heuristic value of the current game state to the specified player.
+    """
+    # moves available to player and opponent
+    own_moves = game.get_legal_moves(player)
+    opp_moves = game.get_legal_moves(game.get_opponent(player))
+
+    # losing branch
+    if not own_moves:
+        return float("-inf")
+
+    # winning branch
+    if not opp_moves:
+        return float("inf")
+
+    # Count moves along edges of board for player and opponent
+    own_moves_edges = [move for move in own_moves if
+                       move[0] == 0 or move[0] == game.width or move[1] == 0 or move[1] == game.height]
+    opp_moves_edges = [move for move in opp_moves if
+                       move[0] == 0 or move[0] == game.width or move[1] == 0 or move[1] == game.height]
+
+    # Minimize the ratio of edge moves for the player and maximize for the opponent
+    return len(opp_moves_edges) / len(opp_moves) - len(own_moves_edges) / len(own_moves)
 
 
 class IsolationPlayer:
@@ -396,10 +429,10 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         for move in game.get_legal_moves():
             move_score = self.min_value(game.forecast_move(move), depth, alpha, beta)
-
-            # Update alpha between nodes
+            # Update alpha between nodes, because we start with the min player
+            if (move_score > alpha):
+                alpha = move_score
             alpha = max(alpha, move_score)
-
             # Update the best move
             if move_score > best_score:
                 best_move = move
