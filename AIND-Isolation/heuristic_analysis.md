@@ -20,6 +20,12 @@ Throughout this document, the term _player_ will be loosely used to represent th
 
 ## Heuristic Analysis
 
+I recommend picking the **Avoid Edges heuristic** for the AlphaBeta game agent.
+This heuristic has the best performance overall, and out performed the Improved heuristic on average score. Furthermore, the Avoid Edges heuristic is about the same computational complexity as the Manhattan score (O(n)), but consistently performed better than or equal to the Manhattan score for all opponents.
+
+Thus the Avoid Edges heuristic is the best choice in terms of overall performance, computational complexity and performance w.r.t all opponents.
+
+
 ### Improved Score
 
 This heuristic was provided to the students through the lecture materials. The heuristic maximizes the number of available moves to the _player_, while minimizing the number of available moves to the _opponent_.
