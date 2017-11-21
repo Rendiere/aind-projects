@@ -29,16 +29,3 @@ The student's needed to implement the MiniMax and AlphaBeta algorithms and addit
 
 Furthermore, this project includes a research review of Deep Mind's AlphaGO paper. 
 
-
-
-### LAB 1: Pacman
-
-Note that this project requires a python version of 2.7. Thus, it is recommended to create a new python environment using anaconda's cli tool: `conda`. Alternatively, activate your own python 2.7 env.
-
-
-``` 
-cd search
-conda create -n conda2.7 python=2.7
-source activate conda2.7 // or activate your own env
-python pacman.py
-```
