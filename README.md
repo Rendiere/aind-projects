@@ -28,3 +28,7 @@ The goal of this project was to write an adversarial search agent to play the ga
 The student's needed to implement the MiniMax and AlphaBeta algorithms and additionally come up with three custom heuristics to evaluate game positions.
 
 Furthermore, this project includes a research review of Deep Mind's AlphaGO paper.
+
+
+### Project 3: Planning
+
