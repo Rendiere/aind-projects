@@ -1,0 +1,3 @@
+
+Solving Air Cargo Problem 3 using breadth_first_tree_search...
+Air Cargo Problem 3 using breadth_first_tree_search took longer than 600 seconds, so was terminated

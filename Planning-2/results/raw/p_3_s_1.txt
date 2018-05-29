@@ -1,0 +1,22 @@
+
+Solving Air Cargo Problem 3 using breadth_first_search...
+
+Expansions   Goal Tests   New Nodes
+  12644       14409       100015  
+
+Plan length: 14  Time elapsed in seconds: 67.51434292001068
+Load(C2, P2, JFK)
+Load(C1, P1, SFO)
+Fly(P2, JFK, SFO)
+Unload(C2, P2, SFO)
+Fly(P1, SFO, JFK)
+Unload(C1, P1, JFK)
+Fly(P1, JFK, ATL)
+Load(C3, P1, ATL)
+Fly(P2, SFO, ORD)
+Load(C4, P2, ORD)
+Fly(P1, ATL, JFK)
+Unload(C3, P1, JFK)
+Fly(P2, ORD, SFO)
+Unload(C4, P2, SFO)
+

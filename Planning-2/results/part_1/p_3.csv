@@ -1,0 +1,8 @@
+Search Method,Expansions,Goal Tests,Plan Length, Execution Time,Optimality
+breadth_first_search,12644,14409,14,67.514,True
+--,--,--,--,--,--
+depth_first_graph_search,242,243,224,0.923,False
+--,--,--,--,--,--
+uniform_cost_search,14838,14840,14,46.449,True
+--,--,--,--,--,--
+greedy_best_first_graph_search,3615,3617,30,11.299,False

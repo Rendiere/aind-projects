@@ -1,0 +1,4 @@
+Search Method,Expansions,Goal Tests,Plan Length, Execution Time,Optimality
+astar_search with h_1,3086,3088,9,7.743,True
+astar_search with h_ignore_preconditions,1049,1051,9,2.827,True
+astar_search with h_pg_levelsum,130,132,9,114.039,True

@@ -1,0 +1,3 @@
+
+Solving Air Cargo Problem 2 using recursive_best_first_search with h_1...
+Air Cargo Problem 2 using recursive_best_first_search took longer than 600 seconds, so was terminated

@@ -1,0 +1,3 @@
+
+Solving Air Cargo Problem 3 using astar_search with h_pg_levelsum...
+Air Cargo Problem 3 using astar_search took longer than 600 seconds, so was terminated
